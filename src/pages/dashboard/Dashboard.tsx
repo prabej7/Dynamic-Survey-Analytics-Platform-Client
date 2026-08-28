@@ -45,10 +45,6 @@ interface AnalyticsData {
   recentResponses: RecentResponse[];
 }
 
-interface AnalyticsResponse {
-  success: boolean;
-  data: AnalyticsData;
-}
 
 const Dashboard = () => {
   const [analytics, setAnalytics] = useState<AnalyticsData | null>(null);
