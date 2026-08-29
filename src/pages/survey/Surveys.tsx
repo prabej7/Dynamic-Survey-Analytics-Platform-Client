@@ -105,12 +105,6 @@ const Surveys = () => {
   });
 
   const handleDelete = async (id: string) => {
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this survey?",
-    );
-
-    if (!confirmed) return;
-
     try {
       await api.delete(`/surveys/${id}`);
 
@@ -368,6 +362,7 @@ const Surveys = () => {
                             ) : (
                               <DropdownMenuItem
                                 onSelect={() => handlePublish(survey.id)}
+                                onClick={() => handlePublish(survey.id)}
                               >
                                 <CheckCircle2 className="mr-2 h-4 w-4" />
                                 Publish
@@ -393,6 +388,7 @@ const Surveys = () => {
                             <DropdownMenuItem
                               variant="destructive"
                               onSelect={() => handleDelete(survey.id)}
+                              onClick={() => handleDelete(survey.id)}
                             >
                               <Trash2 className="mr-2 h-4 w-4" />
                               Delete
