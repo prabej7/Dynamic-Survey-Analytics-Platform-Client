@@ -19,8 +19,10 @@ export const ConditionalLogic: React.FC<ConditionalLogicProps> = ({
   onUpdateOperator,
 }) => {
   if (availableQuestions.length === 0) return null;
-  const [selectedCondition] = availableQuestions.filter((q) => q.id === condition?.questionId);
-  
+  const [selectedCondition] = availableQuestions.filter(
+    (q) => q.id === condition?.questionId,
+  );
+
   return (
     <div className="rounded-lg border bg-muted/30 p-4">
       <div className="mb-4">
@@ -36,7 +38,7 @@ export const ConditionalLogic: React.FC<ConditionalLogicProps> = ({
         <div className="space-y-2 sm:col-span-1">
           <Label className="text-xs">Show when</Label>
           <Select
-            value={selectedCondition.label ?? "none"}
+            value={selectedCondition?.label ?? "none"}
             onValueChange={(value) => {
               if (value === "none") {
                 onSetCondition(null);
