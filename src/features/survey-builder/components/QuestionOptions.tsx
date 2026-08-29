@@ -5,7 +5,6 @@ import { Label } from "@/components/ui/label";
 import type { QuestionOptionsProps } from "../types/types";
 
 export const QuestionOptions: React.FC<QuestionOptionsProps> = ({
-  questionId,
   options,
   onAddOption,
   onUpdateOption,
