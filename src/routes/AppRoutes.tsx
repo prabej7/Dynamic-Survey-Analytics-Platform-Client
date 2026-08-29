@@ -18,18 +18,11 @@ const AppRoutes = () => {
     <BrowserRouter>
       <Routes>
 
-
-
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
 
         <Route path="/register" element={<Register />} />
 
-    
-    
         <Route path="/survey/:slug" element={<PublicSurvey />} />
-
-  
-  
 
         <Route element={<ProtectedRoute />}>
           <Route element={<RoleRoute allowedRoles={["ADMIN"]} />}>

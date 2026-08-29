@@ -71,8 +71,6 @@ const Surveys = () => {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
 
-  
-
   const fetchSurveys = async () => {
     try {
       setLoading(true);
@@ -91,9 +89,6 @@ const Surveys = () => {
     fetchSurveys();
   }, []);
 
-
-  
-
   const filteredSurveys = surveys.filter((survey) => {
     const searchValue = search.toLowerCase();
 
@@ -108,8 +103,6 @@ const Surveys = () => {
 
     return matchesSearch && matchesStatus;
   });
-
-  
 
   const handleDelete = async (id: string) => {
     const confirmed = window.confirm(
@@ -126,9 +119,6 @@ const Surveys = () => {
       handleApiError(error);
     }
   };
-
-
-  
 
   const handlePublish = async (id: string) => {
     try {
@@ -149,9 +139,6 @@ const Surveys = () => {
     }
   };
 
-
-  
-
   const handleUnpublish = async (id: string) => {
     try {
       await api.patch(`/surveys/${id}/unpublish`);
@@ -171,14 +158,8 @@ const Surveys = () => {
     }
   };
 
-
-  
-
   return (
     <div className="space-y-6">
-
-
-
       <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Surveys</h1>
@@ -195,18 +176,12 @@ const Surveys = () => {
         </Link>
       </div>
 
-
-
-
       <Card>
         <CardHeader>
           <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <CardTitle>All Surveys</CardTitle>
 
             <div className="flex flex-col gap-2 sm:flex-row">
-         
-         
-
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
 
@@ -214,12 +189,9 @@ const Surveys = () => {
                   placeholder="Search surveys..."
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
-                  className="pl-9 sm:w-[240px]"
+                  className="pl-9 sm:w-60"
                 />
               </div>
-
-      
-      
 
               <Select
                 value={status}
@@ -229,7 +201,7 @@ const Surveys = () => {
                   }
                 }}
               >
-                <SelectTrigger className="w-full sm:w-[150px]">
+                <SelectTrigger className="w-full sm:w-37.5">
                   <SelectValue placeholder="Status" />
                 </SelectTrigger>
 
@@ -246,16 +218,13 @@ const Surveys = () => {
         </CardHeader>
 
         <CardContent>
-  
-  
-
           {loading ? (
             <div className="space-y-4">
               {Array.from({ length: 5 }).map((_, index) => (
                 <div key={index} className="flex items-center justify-between">
                   <div className="space-y-2">
-                    <Skeleton className="h-4 w-[220px]" />
-                    <Skeleton className="h-3 w-[150px]" />
+                    <Skeleton className="h-4 w-55" />
+                    <Skeleton className="h-3 w-37.5" />
                   </div>
 
                   <Skeleton className="h-8 w-20" />
@@ -263,9 +232,6 @@ const Surveys = () => {
               ))}
             </div>
           ) : filteredSurveys.length === 0 ? (
-     
-            
-
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <div className="rounded-full bg-muted p-4">
                 <Search className="h-6 w-6 text-muted-foreground" />
@@ -284,9 +250,6 @@ const Surveys = () => {
               </Link>
             </div>
           ) : (
-  
-            
-
             <div className="overflow-x-auto">
               <table className="w-full">
                 <thead>
@@ -303,18 +266,15 @@ const Surveys = () => {
                       Updated
                     </th>
 
-                    <th className="w-[60px] pb-3" />
+                    <th className="w-15 pb-3" />
                   </tr>
                 </thead>
 
                 <tbody className="divide-y">
                   {filteredSurveys.map((survey) => (
                     <tr key={survey.id} className="group">
-                    
-                    
-
                       <td className="py-4">
-                        <div className="min-w-[200px]">
+                        <div className="min-w-50">
                           <Link
                             to={`/surveys/${survey.id}/edit`}
                             className="font-medium hover:underline"
@@ -323,22 +283,16 @@ const Surveys = () => {
                           </Link>
 
                           {survey.description && (
-                            <p className="mt-1 max-w-[400px] truncate text-xs text-muted-foreground">
+                            <p className="mt-1 max-w-100 truncate text-xs text-muted-foreground">
                               {survey.description}
                             </p>
                           )}
                         </div>
                       </td>
 
-                 
-                 
-
                       <td className="hidden py-4 text-sm text-muted-foreground md:table-cell">
                         /{survey.slug}
                       </td>
-
-                 
-                 
 
                       <td className="py-4">
                         {survey.isPublished ? (
@@ -354,16 +308,9 @@ const Surveys = () => {
                         )}
                       </td>
 
-
-
                       <td className="hidden py-4 text-sm text-muted-foreground sm:table-cell">
                         {new Date(survey.updatedAt).toLocaleDateString()}
                       </td>
-
-           
-           
-
-
 
                       <td className="py-4">
                         <DropdownMenu>
@@ -374,8 +321,6 @@ const Surveys = () => {
                           </DropdownMenuTrigger>
 
                           <DropdownMenuContent align="end">
-                   
-                   
                             <DropdownMenuItem
                               onSelect={() => {
                                 console.log(survey.id);
@@ -389,8 +334,6 @@ const Surveys = () => {
                               Edit
                             </DropdownMenuItem>
 
-                   
-                   
                             {survey.isPublished && (
                               <DropdownMenuItem
                                 onSelect={() => {
@@ -415,8 +358,6 @@ const Surveys = () => {
 
                             <DropdownMenuSeparator />
 
-                    
-                    
                             {survey.isPublished ? (
                               <DropdownMenuItem
                                 onSelect={() => handleUnpublish(survey.id)}
@@ -435,8 +376,6 @@ const Surveys = () => {
 
                             <DropdownMenuSeparator />
 
-                       
-                       
                             <DropdownMenuItem
                               onSelect={() => {
                                 window.location.href = `/surveys/${survey.id}/analytics`;
@@ -451,8 +390,6 @@ const Surveys = () => {
 
                             <DropdownMenuSeparator />
 
-                   
-                   
                             <DropdownMenuItem
                               variant="destructive"
                               onSelect={() => handleDelete(survey.id)}

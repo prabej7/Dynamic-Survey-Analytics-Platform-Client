@@ -55,7 +55,6 @@ const PublicSurvey = () => {
   const [submitted, setSubmitted] =
     useState(false);
 
-
   useEffect(() => {
     const loadSurvey = async () => {
       if (!slug) return;
@@ -79,8 +78,6 @@ const PublicSurvey = () => {
 
     loadSurvey();
   }, [slug]);
-
-
 
   const setAnswer = (
     questionId: string,
@@ -111,8 +108,7 @@ const PublicSurvey = () => {
     );
   };
 
-
-
+  // FIXED: shouldShowQuestion function
   const shouldShowQuestion = (
     question: SurveyQuestion
   ) => {
@@ -128,18 +124,29 @@ const PublicSurvey = () => {
 
     const answer = answers[questionId];
 
-    if (answer === undefined) {
+    // If the source question hasn't been answered yet, show the question
+    // This allows the question to be visible initially
+    if (answer === undefined || answer === null) {
       return false;
     }
 
+    // Handle multi-select answers
     if (Array.isArray(answer)) {
-      if (operator === "contains") {
-        return answer.includes(value);
+      switch (operator) {
+        case "equals":
+          return answer.includes(value);
+        case "not_equals":
+          return !answer.includes(value);
+        case "contains":
+          return answer.some((v: string) => 
+            v.toLowerCase().includes(value.toLowerCase())
+          );
+        default:
+          return false;
       }
-
-      return false;
     }
 
+    // Handle single value answers
     const answerString = String(answer);
 
     switch (operator) {
@@ -158,8 +165,6 @@ const PublicSurvey = () => {
         return true;
     }
   };
-
-
 
   const validateAnswers = () => {
     if (!survey) {
@@ -196,9 +201,6 @@ const PublicSurvey = () => {
     return true;
   };
 
-
-
-
   const handleSubmit = async () => {
     if (!survey) return;
 
@@ -229,7 +231,6 @@ const PublicSurvey = () => {
     }
   };
 
-
   if (loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-muted/30">
@@ -243,8 +244,6 @@ const PublicSurvey = () => {
       </div>
     );
   }
-
-
 
   if (submitted) {
     return (
@@ -269,7 +268,6 @@ const PublicSurvey = () => {
     );
   }
 
-
   if (!survey) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -286,13 +284,10 @@ const PublicSurvey = () => {
     );
   }
 
-
-
   return (
     <div className="min-h-screen bg-muted/30 px-4 py-10">
       <div className="mx-auto max-w-2xl">
         <Card>
- 
           <CardHeader className="border-b">
             <CardTitle className="text-2xl">
               {survey.title}
@@ -304,7 +299,6 @@ const PublicSurvey = () => {
               </p>
             )}
           </CardHeader>
-
 
           <CardContent className="space-y-8 pt-8">
             {survey.schema.questions.map(
@@ -360,8 +354,6 @@ const PublicSurvey = () => {
 
 export default PublicSurvey;
 
-
-
 interface QuestionProps {
   question: SurveyQuestion;
   index: number;
@@ -394,7 +386,6 @@ const Question = ({
         </Label>
       </div>
 
-
       {question.type === "TEXT" && (
         <Input
           value={(answer as string) || ""}
@@ -405,8 +396,6 @@ const Question = ({
         />
       )}
 
- 
- 
       {question.type ===
         "SINGLE_SELECT" && (
         <RadioGroup
@@ -437,7 +426,6 @@ const Question = ({
         </RadioGroup>
       )}
 
-   
       {question.type ===
         "MULTI_SELECT" && (
         <div className="space-y-3">
@@ -478,8 +466,6 @@ const Question = ({
         </div>
       )}
 
-  
-  
       {question.type === "RATING" && (
         <div className="flex gap-2">
           {[1, 2, 3, 4, 5].map(
